@@ -10,22 +10,28 @@
     <link rel='stylesheet' href='styles/style.css'>
 </head>
 <body>
+    <header>
+        <nav class="nav-bar">
+            <a href="/"><span class="material-symbols-outlined">event</span> Today</a>
+            <a href="/work"><span class="material-symbols-outlined">business_center</span> Work</a>
+        </nav>
+    </header>
     <main class='container'>
         <div class="card">
-            <h1 class="heading"><%= today %></h1>
+            <h1 class="heading"><%= listTitle %></h1>
             <div class="content">
-                <form class="input-form" action="/new" method="post">
-                    <input class="input" type="text" name="new-todo" placeholder="New Todo" autocomplete="off" required>
-                    <button class="add-btn" type="submit">+</button>
+                <form class="input-form" action="/" method="post">
+                    <input class="input" type="text" name="newItem" placeholder="Add Item" autocomplete="off" required>
+                    <button class="add-btn" type="submit" name="list" value=<%= listTitle %>>+</button>
                 </form>
                 <ul class="todos">
-                    <% for(let i = 0; i < list.length; i++){ %> 
+                    <% for(let i = 0; i < listItems.length; i++){ %> 
                         <% if(i > 0) { %>
                             <hr> 
                         <% } %>      
                         <li class="todo">
                             <input type="checkbox" name="check">
-                            <span><%= list[i] %></span>
+                            <span><%= listItems[i] %></span>
                         </li>
                     <% } %>
                 </ul>
