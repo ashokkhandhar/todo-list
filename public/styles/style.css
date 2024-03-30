@@ -15,10 +15,14 @@
   'opsz' 24
 }
 
-body{
-    background-color: var(--background-color);
+*{
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: var(--background-color);
     font-family: Ubuntu;
     color: var(--content-font-color);
 }
@@ -27,36 +31,81 @@ a{
     color: var(--content-font-color);
 }
 
-.nav-bar{
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
     display: flex;
-    gap: 30px;
-    justify-content: flex-end;
-    margin: 20px 15px 0 0;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: var(--primary-color);
+    padding: 15px 25px;
+    z-index: 1;
 }
 
-.nav-bar a{
+.logo {
+    font-size: 20px;
     text-decoration: none;
-    color: var(--primary-color);
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
+    color: white;
+}
+
+.new-todo-list{
+    position: relative;
+}
+
+.todo-input {
+    padding: 8px;
+    width: 300px;
+    border: none;
+    border-radius: 5px;
+    font-size: 17px;
+    color: var(--content-font-color);
+
+}
+
+.todo-input:focus {
+    outline: none;
+}
+
+.todo-btn {
+    position: absolute;
+    top: 3px;
+    right: 10px;
+    border:  none;
+    font-size: 25px;
+    background-color: white;
+    color: var(--content-font-color);
+}
+
+.todo-lists {
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    color: var(--content-font-color);
+    font-size: 16px;
+    cursor: pointer;
 }
 
 .container{
-    min-height: 82vh;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 40px 0;
+    margin-top: 40px;
+}
+
+.first-time {
+    text-align: center;
 }
 
 .card{
     width: 35%;
-    min-height: 90%;
+    min-height: 80%;
     box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     background-color: var(--card-background-color);
+    margin: 100px 0;
 }
 
 .heading{
@@ -70,6 +119,24 @@ a{
     align-items: center;
     border-radius: 10px 10px 0 0;
     font-size: 30px;
+    position: relative;
+}
+
+.card-title {
+    font-size: 30px;
+}
+
+.todo-deletion {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.del-btn {
+    color: white;
+    background-color: var(--primary-color);
+    border: none;
+    cursor: pointer;
 }
 
 .content{
@@ -131,6 +198,7 @@ hr{
     border: none;
     height: 0.5px;
     background-color: #e1e1e1;
+    margin: 8px 0;
 }
 
 li{
@@ -146,10 +214,15 @@ li{
 
 
 footer{
-    height: 5vh;
+    height: 45px;
     display: flex;
     gap: 20px;
     justify-content: center;
     align-items: center;
-    border-top: 0.7px solid #b4b4b4;
+    background-color: var(--primary-color);
+    color: white;
+}
+
+footer a { 
+    color: white;
 }

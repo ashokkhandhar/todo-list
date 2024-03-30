@@ -7,36 +7,63 @@
     <meta name='author' content='Ashok Khandhar'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>Todo List</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel='stylesheet' href='styles/style.css'>
 </head>
 <body>
     <header>
-        <nav class="nav-bar">
-            <a href="/"><span class="material-symbols-outlined">event</span> Today</a>
-            <a href="/work"><span class="material-symbols-outlined">business_center</span> Work</a>
-        </nav>
+        <a href="/" class="logo">
+            <h1>Todo List</h1>
+        </a>
+        <form action="/newList" method="post" class="new-todo-list">
+            <input class="todo-input" type="text" name="listName" placeholder="Create New List">
+            <button class="todo-btn" type="submit">+</button>
+        </form>
+        <select class="todo-lists" name="todo-lists" class="todo-selection" onchange="location = this.value;">
+            <option selected disabled>View List</option>
+            <% lists.forEach(list => { %>
+                <option>
+                    <a href="/<%= list.name %>"><%= list.name %></a>
+                </option>
+            <% }); %>
+        </select>
     </header>
     <main class='container'>
-        <div class="card">
-            <h1 class="heading"><%= listTitle %></h1>
-            <div class="content">
-                <form class="input-form" action="/" method="post">
-                    <input class="input" type="text" name="newItem" placeholder="Add Item" autocomplete="off" required>
-                    <button class="add-btn" type="submit" name="list" value=<%= listTitle %>>+</button>
-                </form>
-                <ul class="todos">
-                    <% for(let i = 0; i < listItems.length; i++){ %> 
-                        <% if(i > 0) { %>
-                            <hr> 
-                        <% } %>      
-                        <li class="todo">
-                            <input type="checkbox" name="check">
-                            <span><%= listItems[i] %></span>
-                        </li>
-                    <% } %>
-                </ul>
+        <% if(locals.list) {%>
+            <div class="card">
+                <div class="heading">
+                    <h1 class="card-title"><%= list.name %></h1>
+                    <form class="todo-deletion" action="/deleteList" method="post">
+                        <button type="submit" class="del-btn" name="listName" value="<%= list.name %>">
+                            <span class="material-symbols-outlined">delete</span>
+                        </button>
+                    </form>
+                </div>
+                <div class="content">
+                    <form class="input-form" action="/newItem" method="post">
+                        <input class="input" type="text" name="itemName" placeholder="Add Item" autocomplete="off" required>
+                        <button class="add-btn" type="submit" name="listName" value="<%= list.name %>">+</button>
+                    </form>
+                    <ul class="todos">
+                        <% for(let i = 0; i < list.items.length; i++){ %> 
+                            <% if(i > 0) { %>
+                                <hr> 
+                            <% } %>      
+                            <li class="todo">
+                                <form action="/deleteItem" method="post">
+                                    <input type="hidden" name="listName" value="<%= list.name %>"></input>
+                                    <input type="checkbox" name="itemId" value="<%= list.items[i]._id %>" onchange="this.form.submit()">
+                                    <span><%= list.items[i].name %></span>
+                                </form>
+                            </li>
+                        <% } %>
+                    </ul>
+                </div>
             </div>
-        </div>
+        <% } else { %>
+            <h1 class="first-time">Create new todo list <br> or <br> view old one..😉</h1>
+        <% } %>
+
     </main>
     <footer>
         <span>Todo List © <%= new Date().getFullYear() %></span> |
