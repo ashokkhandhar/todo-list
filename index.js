@@ -14,7 +14,9 @@ app.use(express.static("public"));
 
 // db connections
 
-mongoose.connect(process.env.URL);
+mongoose.connect(process.env.URI)
+.then(() => console.info("DB Connected"))
+.catch((error) => console.info(`DB Connection error: ${error.message}`));
 
 const itemSchema = new mongoose.Schema({
     name: {
@@ -32,8 +34,8 @@ const Item = mongoose.model("item", itemSchema);
 
 app.get("/", async (req, res) => {
     try {
-        const responce = await List.find();
-        res.render("index.ejs", {lists: responce});
+        const response = await List.find();
+        res.render("index.ejs", {lists: response});
     } catch (error) {
         res.send(error.message);
     }
@@ -42,15 +44,15 @@ app.get("/", async (req, res) => {
 app.post("/newList", async (req, res) => {
     const newListName = _.capitalize(req.body.listName);
     try {
-        const responce = await List.findOne({name: newListName});
-        if(responce === null) {
+        const response = await List.findOne({name: newListName});
+        if(response === null) {
             const newItem = new List({
                 name: newListName,
                 items: [],
             });
             try {
-                const responce = await newItem.save();
-                console.log("Sucessfully created new list..!\n", responce);
+                const response = await newItem.save();
+                console.log("Sucessfully created new list..!\n", response);
                 res.redirect(`/${newListName}`);
             } catch (error) {
                 res.send(error.message);
@@ -78,8 +80,8 @@ app.get("/:listName", async (req, res) => {
 app.post("/deleteList", async (req, res) => {
     const listName = req.body.listName;
     try {
-        const responce = await List.deleteOne({name: listName});
-        console.log(responce);
+        const response = await List.deleteOne({name: listName});
+        console.log(response);
         res.redirect("/");
     } catch (error) {
         res.send(error.message);
@@ -95,8 +97,8 @@ app.post("/newItem", async (req, res) => {
     try {
         const list = await List.findOne({name: listName});
         list.items.push(newItem);
-        const responce = await list.save();
-        console.log("Sucessfully created new item..!\n", responce);
+        const response = await list.save();
+        console.log("Sucessfully created new item..!\n", response);
         res.redirect(`/${listName}`);
     } catch (error) {
         res.send(error.message);
@@ -106,8 +108,8 @@ app.post("/newItem", async (req, res) => {
 app.post("/deleteItem", async (req, res) => {
     const listName = req.body.listName;
     try {
-        const responce = await List.findOneAndUpdate({name: listName}, {$pull: {items: {_id: req.body.itemId}}});
-        console.log(responce);
+        const response = await List.findOneAndUpdate({name: listName}, {$pull: {items: {_id: req.body.itemId}}});
+        console.log(response);
         res.redirect(`/${listName}`);
     } catch (error) {
         res.send(error.message);
